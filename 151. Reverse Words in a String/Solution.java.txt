@@ -1,0 +1,34 @@
+class Solution {
+    public String reverseWords(String s) {
+
+        // separate words from string
+        ArrayList<String> words = new ArrayList<String>();
+        String str = "";
+        int i = 0;
+        for (i = 0; i < s.length(); i++) {
+            if (str.compareTo("") != 0 && s.charAt(i) == ' ') {
+                words.add(str);
+                str = "";
+            }
+            while (i < s.length() && s.charAt(i) == ' ') {
+                i++;
+            }
+
+            if (i < s.length())
+                str += s.charAt(i);
+        }
+
+        if (i == s.length())
+            words.add(str);
+
+        StringBuilder ans = new StringBuilder();
+        for (int j = words.size() - 1 ; j >= 0; j--) {
+            ans.append(words.get(j));
+            ans.append(" ");
+        }
+
+        ans.deleteCharAt(ans.length() - 1);
+
+        return ans.toString();
+    }
+}

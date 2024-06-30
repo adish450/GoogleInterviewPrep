@@ -1,0 +1,18 @@
+class Solution {
+    public int maxArea(int[] height) {
+
+        //brute force
+        int n = height.length;
+        int area = 0;
+
+        for(int i = 0 ; i < n; i++) {
+            int curr = height[i];
+            for (int j = i + 1; j < n; j++) {
+                area = Math.max(area, Math.min(curr,height[j]) * (j-i)); //calculate area between any 2 pair of lines and maximise it.
+            }
+        }
+
+        return area;
+        
+    }
+}

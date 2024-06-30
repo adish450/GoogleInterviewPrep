@@ -5,16 +5,15 @@ class Solution {
         int right = 0;
         int ans = 0;
 
-        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-
+        Integer [] map = new Integer[128];
         while (right < s.length()) {
-            if (map.containsKey(s.charAt(right))) {
-                left = Math.max(left, map.getOrDefault(s.charAt(right),0) + 1);
+            char c = s.charAt(right);
+            if (map[c] != null) { // since it is an Integer obj array, default is null
+                left = Math.max(left, map[c] + 1); //skip to index if it's greater than left
             }
-            map.put(s.charAt(right), right);
+            map[c] = right; // store the index corresponding to char
             ans = Math.max(ans, right - left + 1);
             right++;
-            
         }
 
         return ans;

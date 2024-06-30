@@ -7,15 +7,14 @@ class Solution {
 
         while (right < s.length()) {
             String subString = s.substring(left,right);
-            if (subString.contains(s.charAt(right) + "")) {
+            if (subString.contains(s.charAt(right) + "")) { // O(N)
                 left++;
-            } else {
-                right++;
             }
-            ans = Math.max(ans, right - left);
+
+            right++;
         }
 
-        return ans;
+        return s.length() - left;
         
     }
 }

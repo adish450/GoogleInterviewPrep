@@ -1,0 +1,21 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+        int left  = 0;
+        int right = 0;
+        int ans = 0;
+
+        while (right < s.length()) {
+            String subString = s.substring(left,right);
+            if (subString.contains(s.charAt(right) + "")) {
+                left++;
+            } else {
+                right++;
+            }
+            ans = Math.max(ans, right - left);
+        }
+
+        return ans;
+        
+    }
+}

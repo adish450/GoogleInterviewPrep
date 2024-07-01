@@ -1,0 +1,26 @@
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+        int n = nums.length;
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i = 0 ; i < n; i++) {
+            // store complement in HashMap with index.
+            map.put(target - nums[i], i);
+        }
+
+        for (int i=0;i<n;i++) {
+            if (map.containsKey(nums[i]) && map.get(nums[i]) != i) {
+                // answer found
+                int [] ans = new int[2];
+                ans[0] = map.get(nums[i]);
+                ans[1] = i;
+
+                return ans;
+            }
+        }
+
+        return new int [2];
+        
+    }
+}

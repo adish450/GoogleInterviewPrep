@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        // recursive solution
+        return canJump(nums, 0);
+    }
+
+    private boolean canJump(int[] nums, int index) {
+
+        if (index == nums.length - 1)
+            return true;
+
+        if (index > nums.length - 1)
+            return false;
+
+        for (int i = 1; i <= nums[index]; i++) {
+            if (index + i < nums.length && canJump(nums, index + i))
+                return true;
+
+        }
+
+        return false;
+    }
+}

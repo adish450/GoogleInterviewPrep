@@ -1,22 +1,16 @@
 class Solution {
     public boolean canJump(int[] nums) {
-        // 1D DP
+        // greedy
         int n = nums.length;
-        int[] isPossible = new int[n];
-        isPossible[n - 1] = 2;
+        int leftMostGoodIndex = n - 1;
 
         for (int i = n - 2; i >= 0; i--) {
-
-            int maxJump = Math.min(n - 1, i + nums[i]);
-
-            for (int j = maxJump; j > i; j--) {
-                if (isPossible[j] == 2) {
-                    isPossible[i] = 2;
-                    break;
-                }
+            if (i + nums[i] >= leftMostGoodIndex) {
+                leftMostGoodIndex = i;
             }
+
         }
 
-        return isPossible[0] == 2 ? true : false;
+        return leftMostGoodIndex == 0 ? true : false;
     }
 }

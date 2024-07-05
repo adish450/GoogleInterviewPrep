@@ -1,0 +1,62 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        if (t.length() > s.length() || s.equals("") || t.equals("")) {
+            return "";
+        }
+
+        int n = s.length();
+
+        // we move right until we can a valid window(contains all chars)
+        // then we try to move left pointer until the window is invalid
+
+        // t freq map
+        HashMap<Character, Integer> tMap = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            int count = tMap.getOrDefault(t.charAt(i), 0);
+            tMap.put(t.charAt(i), count + 1);
+        }
+
+        int left = 0, right = 0;
+        int requiredCount = tMap.size();
+        int currentCount = 0;
+        int[] answer = new int[] { Integer.MAX_VALUE, 0, 0 };
+        HashMap<Character, Integer> currentWindowMap = new HashMap<>();
+
+        while (right < s.length()) {
+            // increment right until we find a valid window
+            char c = s.charAt(right);
+            int charCount = currentWindowMap.getOrDefault(c, 0);
+            currentWindowMap.put(c, charCount + 1);
+
+            // check if currentCount can be incremented
+            if (charCount + 1 == tMap.getOrDefault(c, 0)) {
+                currentCount++;
+            }
+
+            // check if window is valid then decrement the window until it is invalid
+            while (left <= right && currentCount == requiredCount) {
+                // store the possible answer
+                if (right - left + 1 < answer[0]) {
+                    answer[0] = right - left + 1;
+                    answer[1] = left;
+                    answer[2] = right;
+                }
+
+                char leftChar = s.charAt(left);
+                // remove from current window
+                currentWindowMap.put(leftChar, currentWindowMap.get(leftChar).intValue() - 1);
+
+                if (tMap.containsKey(leftChar)
+                        && currentWindowMap.get(leftChar).intValue() < tMap.get(leftChar).intValue()) {
+                    currentCount--;
+                }
+
+                left++;
+            }
+
+            right++;
+        }
+
+        return answer[0] == Integer.MAX_VALUE ? "" : s.substring(answer[1], answer[2] + 1);
+    }
+}

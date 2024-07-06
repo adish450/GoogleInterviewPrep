@@ -1,0 +1,42 @@
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+
+        // sliding window approach
+
+        // move right until window is valid
+        HashMap<Character, Integer> windowCharMap = new HashMap<>();
+        int left = 0, right = 0;
+        int currentValidWindowSize = 0;
+        int ans = 0;
+        while (right < s.length()) {
+            char rightChar = s.charAt(right);
+            int rightCharCount = windowCharMap.getOrDefault(rightChar, 0);
+            windowCharMap.put(rightChar, rightCharCount + 1);
+            if (rightCharCount == 0) {
+                currentValidWindowSize++;
+            }
+
+            if (currentValidWindowSize <= 2)
+                ans = Math.max(ans, right - left + 1);
+
+            // shrink the window until it becomes invalid
+            while (left <= right && currentValidWindowSize > 2) {
+                char leftChar = s.charAt(left);
+                int leftCharCount = windowCharMap.get(leftChar).intValue();
+
+                if (leftCharCount - 1 == 0) {
+                    currentValidWindowSize--;
+                }
+
+                windowCharMap.put(leftChar, leftCharCount - 1);
+                left++;
+            }
+
+            right++;
+
+        }
+
+        return ans;
+
+    }
+}

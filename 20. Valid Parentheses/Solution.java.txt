@@ -15,7 +15,7 @@ class Solution {
                         || stack.peek() == '[' && c == ']')) {
                     stack.pop();
                 } else {
-                    stack.push(c);
+                    return false;
                 }
             }
         }

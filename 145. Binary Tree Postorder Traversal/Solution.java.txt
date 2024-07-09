@@ -20,24 +20,40 @@ class Solution {
         if (root == null)
             return ans;
 
-        Stack<TreeNode> stack1 = new Stack<>();
-        Stack<TreeNode> stack2 = new Stack<>();
+        Stack<TreeNode> stack = new Stack<>();
 
         TreeNode node = root;
-        stack1.push(node);
+        TreeNode temp = null;
 
-        while (!stack1.isEmpty()) {
-            node = stack1.pop();
-            stack2.push(node);
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
+                // traverse for left node
+                stack.push(node);
+                node = node.left;
+            } else {
+                // traverse for right node
+                temp = stack.peek().right;
+                if (temp == null) {
+                    // left and right both are over so add to answer
+                    temp = stack.pop();
+                    ans.add(temp.val);
 
-            if (node.left != null)
-                stack1.push(node.left);
-            if (node.right != null)
-                stack1.push(node.right);
-        }
+                    // remove all the nodes which have been processed for both left and right
+                    // subtree
+                    while (!stack.isEmpty() && temp == stack.peek().right) {
+                        temp = stack.pop();
+                        ans.add(temp.val);
+                    }
 
-        while(!stack2.isEmpty()){
-            ans.add(stack2.pop().val);
+                    if (!stack.isEmpty())
+                        node = stack.peek().right;
+                    else
+                        node = null;
+                } else {
+                    node = temp;
+                }
+            }
+
         }
 
         return ans;

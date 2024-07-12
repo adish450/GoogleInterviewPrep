@@ -22,42 +22,31 @@ class Solution {
         }
 
         Deque<TreeNode> queue = new ArrayDeque<>();
-
-        int count = 0;
+        boolean isFromLeft = true;
         queue.addLast(root);
 
         while (!queue.isEmpty()) {
             int size = queue.size();
             List<Integer> list = new ArrayList<>();
-            Deque<TreeNode> q1 = new ArrayDeque<>();
             for (int i = 0; i < size; i++) {
-                TreeNode rn;
-                if (count % 2 == 0) {
-                    rn = queue.removeLast();
-                    if (rn.left != null) {
-                        q1.addLast(rn.left);
-                    }
+                TreeNode rn = queue.removeFirst();
 
-                    if (rn.right != null) {
-                        q1.addLast(rn.right);
-                    }
+                if (isFromLeft) {
+                    list.addLast(rn.val);
                 } else {
-                    rn = queue.removeLast();
-
-                    if (rn.right != null) {
-                        q1.addLast(rn.right);
-                    }
-
-                    if (rn.left != null) {
-                        q1.addLast(rn.left);
-                    }
+                    list.addFirst(rn.val);
                 }
 
-                list.add(rn.val);
+                if (rn.left != null) {
+                    queue.addLast(rn.left);
+                }
+
+                if (rn.right != null) {
+                    queue.addLast(rn.right);
+                }
             }
-            queue = q1;
             ans.add(list);
-            count++;
+            isFromLeft = !isFromLeft;
         }
 
         return ans;

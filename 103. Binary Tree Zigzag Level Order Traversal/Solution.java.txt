@@ -21,28 +21,28 @@ class Solution {
             return ans;
         }
 
-        Deque<TreeNode> queue = new ArrayDeque<>();
+        Queue<TreeNode> queue = new LinkedList<>();
         boolean isFromLeft = true;
-        queue.addLast(root);
+        queue.add(root);
 
         while (!queue.isEmpty()) {
             int size = queue.size();
-            List<Integer> list = new ArrayList<>();
+            LinkedList<Integer> list = new LinkedList<>();
             for (int i = 0; i < size; i++) {
-                TreeNode rn = queue.removeFirst();
+                TreeNode rn = queue.poll();
 
                 if (isFromLeft) {
-                    list.addLast(rn.val);
+                    list.addLast(rn.val); //  O(1)
                 } else {
-                    list.addFirst(rn.val);
+                    list.addFirst(rn.val); // O(1)
                 }
 
                 if (rn.left != null) {
-                    queue.addLast(rn.left);
+                    queue.add(rn.left);
                 }
 
                 if (rn.right != null) {
-                    queue.addLast(rn.right);
+                    queue.add(rn.right);
                 }
             }
             ans.add(list);

@@ -1,0 +1,67 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+class Solution {
+
+    private class Pair {
+        TreeNode node;
+        int col;
+
+        private Pair(TreeNode node, int col) {
+            this.node = node;
+            this.col = col;
+        }
+    }
+
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+
+        if (root == null) {
+            return new ArrayList<List<Integer>>();
+        }
+
+        LinkedList<Pair> queue = new LinkedList<>();
+        queue.addLast(new Pair(root, 0));
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        int minIndex = Integer.MAX_VALUE, maxIndex = Integer.MIN_VALUE;
+
+        while (!queue.isEmpty()) {
+            Pair rn = queue.removeFirst();
+            if (map.get(rn.col) == null) {
+                map.put(rn.col, new ArrayList<>());
+            }
+
+            map.get(rn.col).add(rn.node.val);
+            minIndex = Math.min(minIndex, rn.col);
+            maxIndex = Math.max(maxIndex, rn.col);
+
+            if (rn.node.left != null) {
+                queue.addLast(new Pair(rn.node.left, rn.col - 1));
+            }
+
+            if (rn.node.right != null) {
+                queue.addLast(new Pair(rn.node.right, rn.col + 1));
+            }
+        }
+
+        List<List<Integer>> answer = new ArrayList<List<Integer>>();
+        
+        for (int i = minIndex; i <= maxIndex; i++) {
+            answer.add(map.get(i));
+        }
+
+        return answer;
+
+    }
+}

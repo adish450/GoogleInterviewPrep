@@ -1,51 +1,43 @@
-    /**
-    * Definition for a binary tree node.
-    * public class TreeNode {
-    * int val;
-    * TreeNode left;
-    * TreeNode right;
-    * TreeNode() {}
-    * TreeNode(int val) { this.val = val; }
-    * TreeNode(int val, TreeNode left, TreeNode right) {
-    * this.val = val;
-    * this.left = left;
-    * this.right = right;
-    * }
-    * }
-    */
-    class Solution {
-        public List<Integer> rightSideView(TreeNode root) {
-            List<Integer> ans = new ArrayList<>();
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
 
-            if (root == null) {
-                return ans;
-            }
-
-            LinkedList<TreeNode> queue = new LinkedList<>();
-            queue.addLast(root);
-            ans.add(root.val);
-
-            while (!queue.isEmpty()) {
-                int size = queue.size();
-                int lastVal = -1;
-
-                for (int i = 0; i < size; i++) {
-                    TreeNode rn = queue.removeFirst();
-                    if (rn.left != null) {
-                        queue.addLast(rn.left);
-                        lastVal = rn.left.val;
-                    }
-
-                    if (rn.right != null) {
-                        queue.addLast(rn.right);
-                        lastVal = rn.right.val;
-                    }
-                }
-
-                if (lastVal != -1)
-                    ans.add(lastVal);
-            }
-
+        if (root == null) {
             return ans;
         }
+
+        dfs(root, 0, ans);
+
+        return ans;
+
     }
+
+    private void dfs(TreeNode node, int level, List<Integer> ans) {
+        if (node == null) {
+            return;
+        }
+
+        // if visiting the level for the first time add node
+        if (level == ans.size()) {
+            ans.add(node.val);
+        }
+
+        dfs(node.right, level + 1, ans);
+        dfs(node.left, level + 1, ans);
+    }
+}

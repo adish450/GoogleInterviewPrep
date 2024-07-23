@@ -1,0 +1,22 @@
+class Solution {
+    public int climbStairs(int n) {
+        int[] dpArray = new int[n + 1];
+		Arrays.fill(dpArray, -1);
+		return countDistinctWayToClimbStair(n,dpArray);
+    }
+
+    private int countDistinctWayToClimbStair(int n, int[] dpArray) {
+		if (n < 2) {
+			return dpArray[n] = 1;
+		}
+
+		if (dpArray[n] != -1) {
+			return dpArray[n];
+		}
+
+		int n1 = countDistinctWayToClimbStair(n - 1,dpArray);
+		int n2 = countDistinctWayToClimbStair(n - 2,dpArray);
+
+		return dpArray[n] = n1 + n2;
+	}
+}

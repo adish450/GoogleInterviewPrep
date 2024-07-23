@@ -1,22 +1,15 @@
 class Solution {
     public int climbStairs(int n) {
-        int[] dpArray = new int[n + 1];
-		Arrays.fill(dpArray, -1);
-		return countDistinctWayToClimbStair(n,dpArray);
+       
+        int prev = 1;
+        int prev2 = 1;
+
+        for (int i = 2; i <= n; i++) {
+            int curri = prev + prev2;
+            prev2 = prev;
+            prev = curri;
+        }
+
+        return prev;
     }
-
-    private int countDistinctWayToClimbStair(int n, int[] dpArray) {
-		if (n < 2) {
-			return dpArray[n] = 1;
-		}
-
-		if (dpArray[n] != -1) {
-			return dpArray[n];
-		}
-
-		int n1 = countDistinctWayToClimbStair(n - 1,dpArray);
-		int n2 = countDistinctWayToClimbStair(n - 2,dpArray);
-
-		return dpArray[n] = n1 + n2;
-	}
 }

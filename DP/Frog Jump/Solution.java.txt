@@ -2,30 +2,21 @@ import java.util.* ;
 import java.io.*; 
 public class Solution {
     public static int frogJump(int n, int heights[]) {
-        int[] dpArray = new int[heights.length];
-        Arrays.fill(dpArray, -1);
-        frogJump(heights.length - 1, heights,dpArray);
-        return dpArray[heights.length-1];
-    }
+        n = heights.length;
+        int[] dpArray = new int[n];
+        dpArray[0] = 0;
 
-    private static int frogJump (int n, int[] heights, int[] dpArray) {
+        // dp solution
+        for(int i = 1; i < n ; i++) {
+            int c2 = Integer.MAX_VALUE;
+            int c1 = dpArray[i-1] + Math.abs(heights[i] - heights[i-1]);
+            if(i>1)
+            c2 = dpArray[i-2] + Math.abs(heights[i] - heights[i-2]);
 
-        if (n == 0) {
-            return dpArray[0] = 0;
+            dpArray[i] = Math.min(c1, c2);
         }
 
-        if (dpArray[n] != -1) {
-            return dpArray[n];
-        }
-
-        int c2 = Integer.MAX_VALUE;
-
-        int c1 = frogJump(n-1,heights,dpArray) + Math.abs(heights[n] - heights[n-1]);
-        if (n > 1)
-        c2 = frogJump(n-2,heights,dpArray) + Math.abs(heights[n] - heights[n-2]);
-
-        return dpArray[n] = Math.min(c1,c2);
+        return dpArray[n-1];
 
     }
-
 }

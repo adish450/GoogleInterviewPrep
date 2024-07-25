@@ -1,0 +1,22 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int frogJump(int n, int heights[]) {
+        n = heights.length;
+        int[]dpArray = new int[n];
+        dpArray[0] = 0;
+
+        // dp solution O(N)
+        for(int i = 1; i < n ; i++) {
+            int min = Integer.MAX_VALUE;
+            for(int j = i-1 ; j >= i - k ; i--) {
+                int c1 = dpArray[j] + Math.abs(heights[i] - heights[j]);
+                min = Math.min(min, c1);
+            }
+            dpArray[i] = min;
+        }
+
+        return prev;
+
+    }
+}

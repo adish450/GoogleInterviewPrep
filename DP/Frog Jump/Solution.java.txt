@@ -3,20 +3,20 @@ import java.io.*;
 public class Solution {
     public static int frogJump(int n, int heights[]) {
         n = heights.length;
-        int[] dpArray = new int[n];
-        dpArray[0] = 0;
+        int prev= 0, prev2 = 0;
 
-        // dp solution
+        // dp solution O(1)
         for(int i = 1; i < n ; i++) {
             int c2 = Integer.MAX_VALUE;
-            int c1 = dpArray[i-1] + Math.abs(heights[i] - heights[i-1]);
+            int c1 = prev + Math.abs(heights[i] - heights[i-1]);
             if(i>1)
-            c2 = dpArray[i-2] + Math.abs(heights[i] - heights[i-2]);
-
-            dpArray[i] = Math.min(c1, c2);
+            c2 = prev2 + Math.abs(heights[i] - heights[i-2]);
+            int curri = Math.min(c1, c2);
+            prev2 = prev;
+            prev = curri;
         }
 
-        return dpArray[n-1];
+        return prev;
 
     }
 }

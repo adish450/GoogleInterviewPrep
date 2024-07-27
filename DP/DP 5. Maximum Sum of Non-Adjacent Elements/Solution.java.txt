@@ -6,31 +6,21 @@ public class Solution {
 		// Write your code here.
 		int n = nums.size();
 		int[] dpArray = new int[n];
-		Arrays.fill(dpArray, -1);
-		return maximumNonAdjacentSum(n-1,nums,dpArray);
-	}
+		dpArray[0] = nums.get(0);
 
-	private static int maximumNonAdjacentSum(int index, ArrayList<Integer> nums, int[] dpArray) {
+		for(int i = 1; i < n; i++) {
+			//take
+			int c1 = nums.get(i);
 
-		if (index == 0){
-			return nums.get(index);
+			if (i >= 2)
+			c1 += dpArray[i-2];
+
+			//not take
+			int c2 = dpArray[i-1];
+
+			dpArray[i] = Math.max(c1, c2);
 		}
 
-		if (index < 0){
-			return 0;
-		}
-
-		if(dpArray[index] != -1) {
-			return dpArray[index];
-		}
-
-		//take
-		int c1 = maximumNonAdjacentSum(index-2, nums, dpArray) + nums.get(index);
-
-		//not take
-		int c2 = maximumNonAdjacentSum(index - 1, nums, dpArray);
-
-		return dpArray[index] = Math.max(c1,c2);
-
+		return dpArray[n-1];
 	}
 }

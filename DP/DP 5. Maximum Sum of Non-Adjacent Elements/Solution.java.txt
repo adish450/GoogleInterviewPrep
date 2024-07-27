@@ -5,10 +5,12 @@ public class Solution {
 	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
 		// Write your code here.
 		int n = nums.size();
-		return maximumNonAdjacentSum(n-1,nums);
+		int[] dpArray = new int[n];
+		Arrays.fill(dpArray, -1);
+		return maximumNonAdjacentSum(n-1,nums,dpArray);
 	}
 
-	private static int maximumNonAdjacentSum(int index, ArrayList<Integer> nums) {
+	private static int maximumNonAdjacentSum(int index, ArrayList<Integer> nums, int[] dpArray) {
 
 		if (index == 0){
 			return nums.get(index);
@@ -18,13 +20,17 @@ public class Solution {
 			return 0;
 		}
 
+		if(dpArray[index] != -1) {
+			return dpArray[index];
+		}
+
 		//take
-		int c1 = maximumNonAdjacentSum(index-2, nums) + nums.get(index);
+		int c1 = maximumNonAdjacentSum(index-2, nums, dpArray) + nums.get(index);
 
 		//not take
-		int c2 = maximumNonAdjacentSum(index - 1, nums);
+		int c2 = maximumNonAdjacentSum(index - 1, nums, dpArray);
 
-		return Math.max(c1,c2);
+		return dpArray[index] = Math.max(c1,c2);
 
 	}
 }

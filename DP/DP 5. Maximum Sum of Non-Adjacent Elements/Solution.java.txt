@@ -1,0 +1,30 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int n = nums.size();
+		return maximumNonAdjacentSum(n-1,nums);
+	}
+
+	private static int maximumNonAdjacentSum(int index, ArrayList<Integer> nums) {
+
+		if (index == 0){
+			return nums.get(index);
+		}
+
+		if (index < 0){
+			return 0;
+		}
+
+		//take
+		int c1 = maximumNonAdjacentSum(index-2, nums) + nums.get(index);
+
+		//not take
+		int c2 = maximumNonAdjacentSum(index - 1, nums);
+
+		return Math.max(c1,c2);
+
+	}
+}

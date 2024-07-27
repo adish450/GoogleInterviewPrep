@@ -8,19 +8,22 @@ public class Solution {
 		int[] dpArray = new int[n];
 		dpArray[0] = nums.get(0);
 
+		int prev = dpArray[0] , prev2  = 0;
 		for(int i = 1; i < n; i++) {
 			//take
 			int c1 = nums.get(i);
 
 			if (i >= 2)
-			c1 += dpArray[i-2];
+			c1 += prev2;
 
 			//not take
-			int c2 = dpArray[i-1];
+			int c2 = prev;
 
 			dpArray[i] = Math.max(c1, c2);
+			prev2 = prev;
+			prev = dpArray[i];
 		}
 
-		return dpArray[n-1];
+		return prev;
 	}
 }

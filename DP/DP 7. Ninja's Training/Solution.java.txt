@@ -3,23 +3,25 @@ public class Solution {
     public static int ninjaTraining(int n, int points[][]) {
 
         // Write your code here..
-        int[][] dpArray = new int[n][3];
-        dpArray[0][0] = points[0][0];
-        dpArray[0][1] = points[0][1];
-        dpArray[0][2] = points[0][2];
+        int[] dpArray = new int[3];
+        dpArray[0] = points[0][0];
+        dpArray[1] = points[0][1];
+        dpArray[2] = points[0][2];
 
-        for(int i = 1; i <n ; i++) {
+        for(int i = 1; i < n ; i++) {
+            int[] temp = new int[3];
             for(int j = 0; j < 3; j++) {
                 int max = Integer.MIN_VALUE;
                 for (int k = 0; k < 3; k++) {
                     if (j != k)
-                        max = Math.max(max, dpArray[i-1][k]);
+                        max = Math.max(max, dpArray[k]);
                 }
-                dpArray[i][j] = max + points[i][j];
+                temp[j] = max + points[i][j];
             }
+            dpArray = temp;
         }
 
-        return Math.max(dpArray[n-1][0] , Math.max(dpArray[n-1][1], dpArray[n-1][2]));
+        return Math.max(dpArray[0] , Math.max(dpArray[1], dpArray[2]));
     }
 
 }

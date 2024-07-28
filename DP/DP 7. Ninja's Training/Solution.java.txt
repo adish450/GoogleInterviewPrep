@@ -1,0 +1,32 @@
+import java.util.Arrays; 
+public class Solution {
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+        int[][] dpArray = new int[n][3];
+        for (int[] arr : dpArray) {
+            Arrays.fill(arr,-1);
+        }
+        return Math.max(ninjaTraining(n-1, 0, points, dpArray), Math.max(ninjaTraining(n-1, 1, points, dpArray), ninjaTraining(n-1, 2, points, dpArray)));
+    }
+
+    private static int ninjaTraining(int n, int act, int[][] points, int[][] dpArray){
+
+        if(n == 0) {
+            return points[0][act];
+        }
+
+        if(dpArray[n][act] != -1) {
+            return dpArray[n][act];
+        }
+
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 3; i++) {
+            if (i != act)
+            max = Math.max(max, ninjaTraining(n-1, i, points,dpArray));
+        }
+
+        return dpArray[n][act] = max +  points[n][act];
+    }
+
+}

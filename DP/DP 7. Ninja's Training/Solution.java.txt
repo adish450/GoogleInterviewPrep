@@ -4,29 +4,22 @@ public class Solution {
 
         // Write your code here..
         int[][] dpArray = new int[n][3];
-        for (int[] arr : dpArray) {
-            Arrays.fill(arr,-1);
-        }
-        return Math.max(ninjaTraining(n-1, 0, points, dpArray), Math.max(ninjaTraining(n-1, 1, points, dpArray), ninjaTraining(n-1, 2, points, dpArray)));
-    }
+        dpArray[0][0] = points[0][0];
+        dpArray[0][1] = points[0][1];
+        dpArray[0][2] = points[0][2];
 
-    private static int ninjaTraining(int n, int act, int[][] points, int[][] dpArray){
-
-        if(n == 0) {
-            return points[0][act];
-        }
-
-        if(dpArray[n][act] != -1) {
-            return dpArray[n][act];
-        }
-
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 3; i++) {
-            if (i != act)
-            max = Math.max(max, ninjaTraining(n-1, i, points,dpArray));
+        for(int i = 1; i <n ; i++) {
+            for(int j = 0; j < 3; j++) {
+                int max = Integer.MIN_VALUE;
+                for (int k = 0; k < 3; k++) {
+                    if (j != k)
+                        max = Math.max(max, dpArray[i-1][k]);
+                }
+                dpArray[i][j] = max + points[i][j];
+            }
         }
 
-        return dpArray[n][act] = max +  points[n][act];
+        return Math.max(dpArray[n-1][0] , Math.max(dpArray[n-1][1], dpArray[n-1][2]));
     }
 
 }

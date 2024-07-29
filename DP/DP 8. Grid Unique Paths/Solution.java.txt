@@ -4,30 +4,19 @@ public class Solution {
 	public static int uniquePaths(int m, int n) {
 		// Write your code here.
 		int[][] dpArray = new int[m][n];
-		for (int[] arr : dpArray) {
-			Arrays.fill(arr, -1);
-		}
-		return uniquePaths(0, 0,m-1,n-1, dpArray);
-	}
-
-	private static int uniquePaths(int a, int b , int m, int n, int[][] dpArray) {
-
-		if (a > m || b > n) {
-			return 0;
-		}
-
-		if (a == m && b == n) {
-			return 1;
+		dpArray[m-1][n-1] = 1;
+		for(int i = m-1; i >=0; i--) {
+			for(int j= n-1; j >=0;j--) {
+				if (i + 1 < m) {
+					dpArray[i][j] += dpArray[i+1][j];
+				}
+				
+				if (j + 1 < n) {
+					dpArray[i][j] += dpArray[i][j+1];
+				}
+			}
 		}
 
-		if (dpArray[a][b] != -1) {
-			return dpArray[a][b];
-		}
-
-
-		int p1 = uniquePaths(a, b + 1, m, n, dpArray);
-		int p2 = uniquePaths(a + 1, b, m, n, dpArray);
-
-		return dpArray[a][b] = p1 + p2;
+		return dpArray[0][0];
 	}
 }

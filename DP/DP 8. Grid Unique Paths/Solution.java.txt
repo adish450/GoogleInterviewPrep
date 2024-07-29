@@ -1,0 +1,33 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int uniquePaths(int m, int n) {
+		// Write your code here.
+		int[][] dpArray = new int[m][n];
+		for (int[] arr : dpArray) {
+			Arrays.fill(arr, -1);
+		}
+		return uniquePaths(0, 0,m-1,n-1, dpArray);
+	}
+
+	private static int uniquePaths(int a, int b , int m, int n, int[][] dpArray) {
+
+		if (a > m || b > n) {
+			return 0;
+		}
+
+		if (a == m && b == n) {
+			return 1;
+		}
+
+		if (dpArray[a][b] != -1) {
+			return dpArray[a][b];
+		}
+
+
+		int p1 = uniquePaths(a, b + 1, m, n, dpArray);
+		int p2 = uniquePaths(a + 1, b, m, n, dpArray);
+
+		return dpArray[a][b] = p1 + p2;
+	}
+}

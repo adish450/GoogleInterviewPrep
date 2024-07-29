@@ -3,20 +3,27 @@ import java.io.*;
 public class Solution {
 	public static int uniquePaths(int m, int n) {
 		// Write your code here.
-		int[][] dpArray = new int[m][n];
-		dpArray[m-1][n-1] = 1;
+		int[] prev = new int[n];
 		for(int i = m-1; i >=0; i--) {
-			for(int j= n-1; j >=0;j--) {
-				if (i + 1 < m) {
-					dpArray[i][j] += dpArray[i+1][j];
+			int[] curr = new int[n];
+			for(int j = n-1; j >=0; j--) {
+				if (i == m-1 && j == n-1) {
+					curr[j] = 1;
+					continue;
 				}
+
+				int curri = 0;
+				
+				curri += prev[j];
 				
 				if (j + 1 < n) {
-					dpArray[i][j] += dpArray[i][j+1];
+					curri += curr[j+1];
 				}
-			}
-		}
 
-		return dpArray[0][0];
+				curr[j] =  curri;
+			}
+			prev = curr;
+		}
+		return prev[0];
 	}
 }

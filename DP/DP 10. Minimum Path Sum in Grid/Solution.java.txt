@@ -1,0 +1,32 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minSumPath(int[][] grid) {
+    	// Write your code here.
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int[][] dpArray = new int[n][m];
+        for(int[] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+
+        return minSumPath(0,n-1,0,m-1,grid,dpArray);
+    }
+
+    private static int minSumPath (int cr, int er, int cc, int ec, int[][] grid, int[][] dpArray) {
+        if (cr > er || cc > ec) {
+            return Integer.MAX_VALUE;
+        }
+
+        if (cr == er && cc == ec) {
+            return grid[cr][cc];
+        }
+
+        if (dpArray[cr][cc] != -1) {
+            return dpArray[cr][cc];
+        }
+
+        return dpArray[cr][cc] = Math.min(minSumPath(cr+1,er,cc,ec,grid,dpArray), minSumPath(cr,er,cc+1,ec,grid,dpArray)) + grid[cr][cc];
+    }
+}

@@ -1,0 +1,39 @@
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int getMaxPathSum(int[][] matrix) {
+		// Write your code here
+		int n = matrix.length;
+		int m = matrix[0].length;
+		int max = Integer.MIN_VALUE;
+		int[][] dpArray = new int[n][m];
+
+		for (int[] arr : dpArray) {
+			Arrays.fill(arr, -1);
+		}
+
+		for (int i = 0 ; i < m; i++) {
+			max = Math.max(max, getMaxPathSum(0,i,n-1,m-1,matrix,dpArray));
+		}
+
+		return max;
+	}
+
+	private static int getMaxPathSum(int cr, int cc, int er, int ec, int[][] matrix, int[][] dpArray) {
+
+		if (cr > er || cc > ec || cc < 0) {
+			return Integer.MIN_VALUE;
+		}
+
+		if (cr == er) {
+			return matrix[cr][cc];
+		}
+
+		if (dpArray[cr][cc] != -1) {
+			return dpArray[cr][cc];
+		}
+
+		return dpArray[cr][cc] = Math.max(getMaxPathSum(cr + 1, cc, er, ec, matrix,dpArray), Math.max(getMaxPathSum(cr + 1, cc - 1, er, ec, matrix,dpArray), getMaxPathSum(cr + 1, cc + 1, er, ec, matrix,dpArray))) + matrix[cr][cc];
+	}
+}

@@ -1,0 +1,31 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minimumPathSum(int[][] triangle, int n) {
+        // Write your code here.
+        int[][] dpArray = new int[n][n];
+        for(int[] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+        return minimumPathSum(0,0,n-1,triangle,dpArray);
+    }
+
+    private static int minimumPathSum (int cr, int cc, int er, int[][] triangle, int[][] dpArray) {
+
+        if (cc >= triangle[cr].length) {
+            return Integer.MAX_VALUE;
+        }
+
+        if (cr == er)  {
+            return triangle[cr][cc];
+        }
+
+        if (dpArray[cr][cc] != -1) {
+            return dpArray[cr][cc];
+        }
+
+        
+        return dpArray[cr][cc] = Math.min(minimumPathSum(cr +1 , cc, er, triangle, dpArray), minimumPathSum(cr +1 , cc + 1, er, triangle, dpArray)) + triangle[cr][cc];
+
+    }
+}

@@ -1,0 +1,48 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int frogJump(int n, int heights[]) {
+        n = heights.length;
+        int prev= 0, prev2 = 0;
+
+        // dp solution O(1)
+        for(int i = 1; i < n ; i++) {
+            int c2 = Integer.MAX_VALUE;
+            int c1 = prev + Math.abs(heights[i] - heights[i-1]);
+            if(i>1)
+            c2 = prev2 + Math.abs(heights[i] - heights[i-2]);
+            int curri = Math.min(c1, c2);
+            prev2 = prev;
+            prev = curri;
+        }
+import java.util.*;
+public class Solution {
+    static int mazeObstacles(int n, int m, ArrayList<ArrayList<Integer>> mat) {
+        // Write your code here.
+        int [][] dpArray = new int[n][m];
+        for (int [] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+        return mazeObstacles(0, n-1, 0, m-1, mat,dpArray);
+    }
+
+    private static int mazeObstacles(int cr, int er, int cc, int ec, ArrayList<ArrayList<Integer>> mat, int[][] dpArray) {
+        if (cr > er || cc > ec || mat.get(cr).get(cc) == -1) {
+            return 0;
+        }
+
+        if (cr == er && cc == ec) {
+            return 1;
+        }
+
+        if (dpArray[cr][cc] != -1) {
+            return dpArray[cr][cc];
+        }
+
+        int p1 = mazeObstacles(cr + 1, er, cc, ec, mat, dpArray);
+        int p2 = mazeObstacles(cr, er, cc + 1, ec, mat, dpArray);
+
+        return dpArray[cr][cc] = (int)((p1 + p2) % (Math.pow(10, 9) + 7));
+    }
+
+}

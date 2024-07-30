@@ -2,27 +2,33 @@ import java.util.*;
 public class Solution {
     static int mazeObstacles(int n, int m, ArrayList<ArrayList<Integer>> mat) {
         // Write your code here.
-        int [][] dpArray = new int[n][m];
+        int [] prev = new int[m];
 
         for (int i = 0 ; i < n; i++) {
+            int[] curr = new int[m];
             for(int j = 0; j < m; j++) {
                 if (i==0 && j==0) {
-                    dpArray[i][j] = 1;
+                    curr[j] = 1;
                     continue;
                 }
 
+                int curri = 0;
+
                 if (i - 1 >= 0 && mat.get(i).get(j) != -1) {
-                    dpArray[i][j] += dpArray[i-1][j];
+                    curri += prev[j];
                 }
 
                 if (j - 1 >= 0 && mat.get(i).get(j) != -1) {
-                    dpArray[i][j] += dpArray[i][j-1];
+                    curri += curr[j-1];
                 }
 
-                dpArray[i][j] %= (Math.pow(10, 9) + 7);
+                curr[j] = (int)(curri % (Math.pow(10, 9) + 7));
             }
+
+            prev = curr;
         }
-        return dpArray[n-1][m-1];
+        
+        return prev[m-1];
     }
 
 }

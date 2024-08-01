@@ -1,0 +1,55 @@
+import java.util.Arrays;
+
+public class Solution {
+	public static boolean canPartition(int[] arr, int n) {
+		// Write your code here.
+		int sum  = 0;
+		for(int i=0; i < n; i++) {
+			sum += arr[i];
+		}
+
+		if (sum % 2 != 0){
+			return false;
+		}
+
+		int[][] dpArray = new int[n][(sum/2) + 1];
+		for(int[] arr1 : dpArray){
+			Arrays.fill(arr1, -1);
+		}
+
+		return canPartition (n-1,sum/2, arr, dpArray);
+	}
+
+	private static boolean canPartition (int n, int target, int[] arr, int[][] dpArray) {
+		if (target < 0) {
+			return false;
+		}
+		
+		if (target == 0) {
+			return true;
+		}
+
+		if (n == 0) {
+			return target - arr[0] == 0;
+		}
+
+		if (dpArray[n][target] != -1) {
+			if (dpArray[n][target] == 0) {
+				return false;
+			}
+
+			return true;
+		}
+
+		boolean a1 = canPartition (n-1, target - arr[n], arr, dpArray);
+		boolean a2 = canPartition (n-1, target, arr, dpArray);
+
+		if (a1 || a2) {
+			dpArray[n][target] = 1;
+		} else {
+			dpArray[n][target] = 0;
+		}
+
+		return a1 || a2;
+	}
+}

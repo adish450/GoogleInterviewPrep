@@ -15,12 +15,11 @@ public class Solution {
 
     private static int findWays (int n,int tar,int[] num, int[][] dpArray) {
         
-        if (tar == 0) {
-            return 1;
-        }
-
         if (n == 0){
-            if (num[0] == tar){
+            if (tar == 0 && num[0] == 0){
+                return 2;
+            }
+            if (tar == 0 || num[0] == tar){
                 return 1;
             }
             return 0;

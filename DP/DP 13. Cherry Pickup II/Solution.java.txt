@@ -3,30 +3,30 @@ import java.io.*;
 public class Solution {
 	public static int maximumChocolates(int r, int c, int[][] grid) {
 		// Write your code here.
-		int [][][] dpArray = new int[r][c][c];
+		int [][] prev = new int[c][c];
 
 		//base case
 		for(int j1 = 0; j1 < c; j1++) {
 			for(int j2 = 0 ; j2 < c; j2++) {
 				if (j1 == j2) {
-					dpArray[r-1][j1][j2] = grid[r-1][j1];
+					prev[j1][j2] = grid[r-1][j1];
 				} else {
-					dpArray[r-1][j1][j2] = grid[r-1][j1] + grid[r-1][j2];
+					prev[j1][j2] = grid[r-1][j1] + grid[r-1][j2];
 				}
 			}
 		}
 
 		for (int i = r-2; i >=0; i--) {
+			int[][] curr = new int[c][c];
 			for (int j = 0; j < c; j++) {
 				for (int k = 0 ; k < c; k++) {
-
 					int[] dir = {-1,0,1};
 					int maxi = Integer.MIN_VALUE;
 					for(int d1 = 0; d1 < dir.length; d1++) {
 						for(int d2 = 0; d2 < dir.length; d2++) {
 							int curri = 0;
 							if (j + dir[d1] >= 0 && j + dir[d1] < c && k + dir[d2] >= 0 && k + dir[d2] < c) {
-								curri += dpArray[i+1][j + dir[d1]][k + dir[d2]];
+								curri += prev[j + dir[d1]][k + dir[d2]];
 							}
 							maxi = Math.max(maxi, curri);
 						}
@@ -38,11 +38,13 @@ public class Solution {
 						maxi += grid[i][j] + grid[i][k];
 					}
 
-					dpArray[i][j][k] = maxi;
+					curr[j][k] = maxi;
 				}
 			}
+
+			prev = curr;
 		}
 
-		return dpArray[0][0][c-1];
+		return prev[0][c-1];
 	}
 }

@@ -1,0 +1,53 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int maximumChocolates(int r, int c, int[][] grid) {
+		// Write your code here.
+		int [][][] dpArray = new int[r][c][c];
+
+		for (int[][] arr1 : dpArray) {
+			for (int[] arr2 : arr1) {
+				Arrays.fill(arr2, -1);
+			}
+		}
+
+		return maximumChocolates(0,0,c-1,r,c,grid,dpArray);
+	}
+
+	private static int maximumChocolates(int i, int j1, int j2, int r, int c, int[][] grid, int[][][] dpArray) {
+		if (j1 < 0 || j1 > c-1 || j2 < 0 || j2 > c-1) {
+			return Integer.MIN_VALUE;
+		}
+
+		if (i == r -1) {
+			if (j1 == j2) {
+				return grid[i][j1];
+			} else {
+				return grid[i][j1] + grid[i][j2];
+			}
+		}
+
+		if (dpArray[i][j1][j2] != -1) {
+			return dpArray[i][j1][j2];
+		}
+
+		int[] dir = {-1,0,1};
+
+		int maxi = Integer.MIN_VALUE;
+		for(int d1 = 0; d1 < dir.length; d1++) {
+			for(int d2 = 0; d2 < dir.length; d2++) {
+				maxi = Math.max(maxi, maximumChocolates(i+1, j1 + dir[d1], j2 + dir[d2], r, c, grid, dpArray));
+			}
+		}
+
+		if (j1 == j2) {
+			maxi += grid[i][j1];
+		} else {
+			maxi += grid[i][j1] + grid[i][j2];
+		}
+
+		return dpArray[i][j1][j2] = maxi;
+
+		
+	}
+}

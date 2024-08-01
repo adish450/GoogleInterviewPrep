@@ -1,0 +1,41 @@
+public class Solution {
+    public static int minSubsetSumDifference(int []arr, int n) {
+        // Write your code here.
+        int totSum = 0;
+        for(int i : arr) {
+            totSum += i;
+        }
+
+        boolean [][] dpArray = new boolean[n][totSum + 1];
+
+        //fill base cases
+        //1. target == 0 for any index
+
+        for(int i = 0 ; i < n; i++) {
+            dpArray[i][0] = true;
+        }
+
+        //2. n == 0, arr[0] = target
+        if(arr[0] <= totSum)dpArray[0][arr[0]] = true;
+
+        for (int i = 1; i < n ; i++) {
+            for(int j = 1; j < totSum; j++) {
+                boolean take = false;
+                if  (j - arr[i] >=0)
+                    take = dpArray[i-1][j - arr[i]];
+                boolean notTake = dpArray[i-1][j];
+                dpArray[i][j] = take || notTake;
+            }
+        }
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = 0; i <= (totSum/2); i++) {
+            if(dpArray[n-1][i]) {
+                min = Math.min(min, Math.abs(totSum - (2 * i)));
+            }
+        }
+
+        return min;
+    }
+}

@@ -1,0 +1,39 @@
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+
+            /* Your class should be named Solution
+            * Don't write main().
+            * Don't read input, it is passed as function argument.
+            * Change in the given tree itself.
+            * No need to return or print the output.
+            * Taking input and printing output is handled automatically.
+            */
+        int[][] dpArray = new int[n][maxWeight+1];
+        for(int[] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+
+        return knapsack(n-1,weight, value, maxWeight, dpArray);
+
+    }
+
+    private static int knapsack(int n,int[] weight,int[] value,int maxWeight,int[][] dpArray) {
+        if (maxWeight == 0 || n < 0) {
+            return 0;
+        }
+
+        if (dpArray[n][maxWeight] != -1) {
+            return dpArray[n][maxWeight];
+        } 
+        
+        int c1 = Integer.MIN_VALUE;
+        if (weight[n] <= maxWeight)
+            c1 = knapsack(n-1, weight, value, maxWeight - weight[n], dpArray) + value[n];
+        int c2 = knapsack(n-1, weight, value, maxWeight, dpArray);
+
+        return dpArray[n][maxWeight] = Math.max(c1, c2);
+    }
+}

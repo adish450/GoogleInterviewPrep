@@ -1,0 +1,45 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int countPartitions(int n, int d, int[] arr) {
+		// Write your code here.
+		int totSum = 0;
+		for(int i : arr){
+			totSum += i;
+		}
+
+		if ((totSum - d) % 2 != 0 || (totSum - d) <= 0) {
+			return 0;
+		}
+
+		int target = ((totSum - d)/2);
+
+		int[][] dpArray = new int[n][target + 1];
+
+		//base case n == 0 arr[0]
+		if (arr[0] == 0) {
+			dpArray[0][0] = 2;
+		} else {
+			dpArray[0][0] = 1;
+		}
+
+		if (arr[0] != 0 && arr[0] <= target){
+			dpArray[0][arr[0]] = 1;
+		}
+
+		for (int i = 1; i < n; i++) { //index
+			for (int j = 0; j < target + 1; j++) { //target
+				int c1=0,c2=0;
+				//take
+				if (j - arr[i] >=0)
+					c1 = dpArray[i-1][j - arr[i]];
+				//not take
+				c2 = dpArray[i-1][j];
+				dpArray[i][j] = (int)((c1 + c2) % (Math.pow(10, 9) + 7));
+			}
+		}
+
+		return dpArray[n-1][target];
+
+	}
+}

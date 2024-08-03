@@ -1,0 +1,41 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minimumElements(int num[], int x) {
+        int n = num.length;
+
+        int [][] dpArray = new int[n][x + 1];
+        for(int[] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+
+        int ans = minimumElements(n-1, num, x, dpArray);
+        if (ans == (int) 1e9) {
+            return -1;
+        }
+        return ans;
+    }
+
+    private static int minimumElements(int index, int[] num, int target, int[][] dpArray) {
+        if (index == 0) {
+            if (target % num[index] == 0) {
+                //can take
+                return target/num[index];
+            }
+            return (int)1e9;
+        }
+
+        if (dpArray[index][target] != -1) {
+            return dpArray[index][target];
+        }
+
+        int c1 = (int)1e9;
+        if (target - num[index] >= 0)
+            c1 = minimumElements(index, num, target - num[index], dpArray) + 1; //take
+        int c2 = minimumElements(index-1, num, target, dpArray); // not take
+
+        return dpArray[index][target] = Math.min(c1, c2);
+            
+    }
+
+}

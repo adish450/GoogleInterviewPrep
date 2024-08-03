@@ -5,37 +5,26 @@ public class Solution {
         int n = num.length;
 
         int [][] dpArray = new int[n][x + 1];
-        for(int[] arr : dpArray) {
-            Arrays.fill(arr, -1);
-        }
-
-        int ans = minimumElements(n-1, num, x, dpArray);
-        if (ans == (int) 1e9) {
-            return -1;
-        }
-        return ans;
-    }
-
-    private static int minimumElements(int index, int[] num, int target, int[][] dpArray) {
-        if (index == 0) {
-            if (target % num[index] == 0) {
-                //can take
-                return target/num[index];
+        // base case
+        for (int i= 1 ; i < x+1 ; i++) {
+            if (i % num[0] == 0) {
+                dpArray[0][i] = i/num[0];
+            } else {
+                dpArray[0][i] = (int) 1e9;
             }
-            return (int)1e9;
         }
 
-        if (dpArray[index][target] != -1) {
-            return dpArray[index][target];
+        for (int i = 1; i < n; i++) {
+            for(int j = 1 ; j <= x; j++) {
+                int c1 = (int)1e9;
+                if (j - num[i] >= 0)
+                    c1 = dpArray[i][j - num[i]] + 1; //take
+                int c2 = dpArray[i-1][j]; // not take
+
+                dpArray[i][j] = Math.min(c1, c2);
+            }
         }
 
-        int c1 = (int)1e9;
-        if (target - num[index] >= 0)
-            c1 = minimumElements(index, num, target - num[index], dpArray) + 1; //take
-        int c2 = minimumElements(index-1, num, target, dpArray); // not take
-
-        return dpArray[index][target] = Math.min(c1, c2);
-            
-    }
-
+        return dpArray[n-1][x] == (int)1e9 ? -1 : dpArray[n-1][x];
+     }
 }

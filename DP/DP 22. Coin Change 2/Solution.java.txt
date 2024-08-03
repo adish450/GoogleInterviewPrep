@@ -7,36 +7,27 @@ public class Solution {
 		int n = denominations.length;
 		long[][] dpArray = new long[n][value + 1];
 
-		for(long[] arr : dpArray) {
-			Arrays.fill(arr, -1);
+		//base case  n == 0
+		for (int i = 0; i <= value; i++) {
+			if (i % denominations[0] == 0) {
+				dpArray[0][i] = 1;
+			}
 		}	
 
-		return countWaysToMakeChange(n-1,value,denominations,dpArray);
-
-	}
-
-	private static long countWaysToMakeChange (int index, int value, int denominations[], long[][] dpArray) {
-
-		if (index == 0) {
-			if (value % denominations[0] == 0) {
-				return 1;
+		for (int i = 1; i < n; i++) {
+			for (int j = 0; j <= value; j++) {
+				long c1=0,c2=0;
+				// take
+				if (j - denominations[i] >=0)
+					c1 = dpArray[i][j-denominations[i]];
+				//not take
+				c2 = dpArray[i-1][j];
+				dpArray[i][j] = c1 + c2;
 			}
-			return 0;
 		}
 
-		if (dpArray[index][value] != -1) {
-			return dpArray[index][value];
-		}
+		return dpArray[n-1][value];
 
-
-		long c1=0,c2=0;
-
-		if(denominations[index] <= value)
-			c1 = countWaysToMakeChange(index, value - denominations[index],denominations,dpArray);
-		c2 = countWaysToMakeChange(index-1,value,denominations,dpArray);
-
-		return dpArray[index][value] = c1 + c2;
-	}
-
-	
+		
+	}	
 }

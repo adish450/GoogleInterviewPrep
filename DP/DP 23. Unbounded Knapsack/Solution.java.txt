@@ -4,30 +4,23 @@ public class Solution {
     public static int unboundedKnapsack(int n, int w, int[] profit, int[] weight) {
         // Write your code here.
         int[][] dpArray = new int[n][w+1];
-        for(int[] arr : dpArray) {
-            Arrays.fill(arr, -1);
+        
+        for (int w1 = 0; w1 <=w ; w1++) {
+            if (weight[0] <= w1) {
+                dpArray[0][w1] = (int)(w1/weight[0]) * profit[0];
+            }  
         }
 
-        return unboundedKnapsack(n-1,w,profit,weight,dpArray);
-    }
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= w; j++) {
+                int c1 = 0;
+                if (weight[i] <= j)
+                    c1 = dpArray[i][j - weight[i]]+ profit[i];
+                int c2 = dpArray[i-1][j];
 
-    private static int unboundedKnapsack(int n, int w, int[] profit, int[] weight, int[][] dpArray) {
-        if (n == 0) {
-            if (weight[0] <= w) {
-                return (int)(w/weight[0]) * profit[0];
+                dpArray[i][j] = Math.max(c1, c2);
             }
-            return 0;
         }
-
-        if (dpArray[n][w] != -1) {
-            return dpArray[n][w];
-        }
-
-        int c1 = 0;
-        if (weight[n] <= w)
-            c1 = unboundedKnapsack(n, w - weight[n], profit, weight, dpArray) + profit[n];
-        int c2 = unboundedKnapsack(n-1, w, profit, weight, dpArray);
-
-        return dpArray[n][w] = Math.max(c1, c2);
+        return dpArray[n-1][w];
     }
 }

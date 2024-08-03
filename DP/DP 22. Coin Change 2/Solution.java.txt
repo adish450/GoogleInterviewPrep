@@ -1,0 +1,42 @@
+import java.util.Arrays;
+
+public class Solution {
+
+	public static long countWaysToMakeChange(int denominations[], int value){
+        //write your code here
+		int n = denominations.length;
+		long[][] dpArray = new long[n][value + 1];
+
+		for(long[] arr : dpArray) {
+			Arrays.fill(arr, -1);
+		}	
+
+		return countWaysToMakeChange(n-1,value,denominations,dpArray);
+
+	}
+
+	private static long countWaysToMakeChange (int index, int value, int denominations[], long[][] dpArray) {
+
+		if (index == 0) {
+			if (value % denominations[0] == 0) {
+				return 1;
+			}
+			return 0;
+		}
+
+		if (dpArray[index][value] != -1) {
+			return dpArray[index][value];
+		}
+
+
+		long c1=0,c2=0;
+
+		if(denominations[index] <= value)
+			c1 = countWaysToMakeChange(index, value - denominations[index],denominations,dpArray);
+		c2 = countWaysToMakeChange(index-1,value,denominations,dpArray);
+
+		return dpArray[index][value] = c1 + c2;
+	}
+
+	
+}

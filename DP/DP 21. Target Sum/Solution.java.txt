@@ -2,62 +2,43 @@ import java.util.* ;
 import java.io.*; 
 public class Solution {
 
-    private static class Pair {
-        int key;
-        int value;
-
-        Pair(int key, int value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Pair pair = (Pair) o;
-            return key == pair.key && value == pair.value;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
-        }
-    }
-
     public static int targetSum(int n, int target, int[] arr) {
-        HashMap<Pair,Integer> map = new HashMap<>();
-    	return targetSum(n-1, target, arr, map);
+        int totSum = 0;
+		for(int i : arr){
+			totSum += i;
+		}
+
+		if ((totSum + target) % 2 != 0) {
+			return 0;
+		}
+
+		target = ((totSum + target)/2);
+
+		int[][] dpArray = new int[n][target + 1];
+
+		//base case n == 0 arr[0]
+		if (arr[0] == 0) {
+			dpArray[0][0] = 2;
+		} else {
+			dpArray[0][0] = 1;
+		}
+
+		if (arr[0] != 0 && arr[0] <= target){
+			dpArray[0][arr[0]] = 1;
+		}
+
+		for (int i = 1; i < n; i++) { //index
+			for (int j = 0; j < target + 1; j++) { //target
+				int c1=0,c2=0;
+				//take
+				if (j - arr[i] >=0)
+					c1 = dpArray[i-1][j - arr[i]];
+				//not take
+				c2 = dpArray[i-1][j];
+				dpArray[i][j] = (int)((c1 + c2) % (Math.pow(10, 9) + 7));
+			}
+		}
+
+		return dpArray[n-1][target];
     }
-
-    private static int targetSum(int n, int target, int[] arr, HashMap<Pair,Integer> map) {
-    
-    if (n == 0) {
-        int count = 0;
-        if (target + arr[0] == 0){
-            count++;
-        }
-
-        if (target - arr[0] == 0) {
-            count++;
-        }
-        return count;
-    }
-
-    Pair p = new Pair(n, target);
-
-    if (map.containsKey(p)) {
-        return map.get(p);
-    }
-
-    int c1 = 0, c2 = 0;
-    c1 = targetSum(n-1, target - arr[n], arr, map);
-    c2 = targetSum(n-1, target + arr[n], arr, map);
-
-    map.put(p, c1 + c2);
-    return c1 + c2;
-}
-
-
-
 }

@@ -1,0 +1,33 @@
+import java.util.Arrays;
+
+public class Solution {
+    public static int unboundedKnapsack(int n, int w, int[] profit, int[] weight) {
+        // Write your code here.
+        int[][] dpArray = new int[n][w+1];
+        for(int[] arr : dpArray) {
+            Arrays.fill(arr, -1);
+        }
+
+        return unboundedKnapsack(n-1,w,profit,weight,dpArray);
+    }
+
+    private static int unboundedKnapsack(int n, int w, int[] profit, int[] weight, int[][] dpArray) {
+        if (n == 0) {
+            if (weight[0] <= w) {
+                return (int)(w/weight[0]) * profit[0];
+            }
+            return 0;
+        }
+
+        if (dpArray[n][w] != -1) {
+            return dpArray[n][w];
+        }
+
+        int c1 = 0;
+        if (weight[n] <= w)
+            c1 = unboundedKnapsack(n, w - weight[n], profit, weight, dpArray) + profit[n];
+        int c2 = unboundedKnapsack(n-1, w, profit, weight, dpArray);
+
+        return dpArray[n][w] = Math.max(c1, c2);
+    }
+}

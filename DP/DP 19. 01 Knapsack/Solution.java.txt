@@ -12,28 +12,21 @@ public class Solution{
             * Taking input and printing output is handled automatically.
             */
         int[][] dpArray = new int[n][maxWeight+1];
-        for(int[] arr : dpArray) {
-            Arrays.fill(arr, -1);
+        for (int i = weight[0]; i < maxWeight + 1; i++) {
+            dpArray[0][i] = value[0];
         }
 
-        return knapsack(n-1,weight, value, maxWeight, dpArray);
-
-    }
-
-    private static int knapsack(int n,int[] weight,int[] value,int maxWeight,int[][] dpArray) {
-        if (maxWeight == 0 || n < 0) {
-            return 0;
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < maxWeight + 1; j++) {
+                int c1 = Integer.MIN_VALUE;
+                if (weight[i] <= j)
+                    c1 = dpArray[i-1][j-weight[i]] + value[i];
+                int c2 = dpArray[i-1][j];
+                dpArray[i][j] = Math.max(c1, c2);
+            }
         }
 
-        if (dpArray[n][maxWeight] != -1) {
-            return dpArray[n][maxWeight];
-        } 
-        
-        int c1 = Integer.MIN_VALUE;
-        if (weight[n] <= maxWeight)
-            c1 = knapsack(n-1, weight, value, maxWeight - weight[n], dpArray) + value[n];
-        int c2 = knapsack(n-1, weight, value, maxWeight, dpArray);
+        return dpArray[n-1][maxWeight];
 
-        return dpArray[n][maxWeight] = Math.max(c1, c2);
     }
 }

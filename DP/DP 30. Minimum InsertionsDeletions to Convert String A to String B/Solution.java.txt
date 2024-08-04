@@ -1,0 +1,28 @@
+public class Solution {
+    public static int canYouMake(String s1, String s2) {
+        // Write your code here.
+        //Your code goes here
+		int n1 = s1.length();
+		int n2 = s2.length();
+
+		if (n1 == 0 || n2 ==0) {
+			return 0;
+		}
+
+		int[][] dpArray = new int[n1+1][n2+1];
+
+		for(int i = 1; i <= n1 ; i++) {
+			for(int j = 1 ; j <= n2 ; j++) {
+				int len1 = 0;
+				if (s1.charAt(i-1) == s2.charAt(j-1)) {
+					len1 = dpArray[i - 1][j - 1] + 1;
+				}
+				int len2 = dpArray[i - 1][j];
+				int len3 = dpArray[i][j-1];
+				dpArray[i][j] = Math.max(len1, Math.max(len2, len3));
+			}
+		}
+
+		return n1 + n2 - (2 * dpArray[n1][n2]);
+    }
+}

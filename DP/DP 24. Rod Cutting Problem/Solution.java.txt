@@ -4,28 +4,22 @@ public class Solution {
 	public static int cutRod(int price[], int n) {
 		// Write your code here.
 		int[][] dpArray = new int[n][n+1];
-		for(int[] arr : dpArray) {
-			Arrays.fill(arr, -1);
-		}
-		return cutRod(n-1,n,price,dpArray);
-	}
-
-	private static int cutRod (int index, int length, int[] price, int[][] dpArray) {
-
-		if (index == 0) {
-			return length * price[0];
+		
+		// base case
+		for (int len = 0; len <= n; len++) {
+			dpArray[0][len] = price[0] * len;
 		}
 
-		if(dpArray[index][length] != -1) {
-			return dpArray[index][length];
+		for (int i=1; i <n; i++) {
+			for (int len = 0; len <= n; len++) {
+					int c1 = Integer.MIN_VALUE;
+					if (i + 1 <= len)
+						c1 = dpArray[i][len - i -1] + price[i];
+					int c2 = dpArray[i-1][len];
+					dpArray[i][len] = Math.max(c1, c2);
+			}
 		}
 
-
-		int c1 = Integer.MIN_VALUE;
-		if (index + 1 <= length)
-			c1 = cutRod(index, length - index -1, price, dpArray) + price[index];
-		int c2 = cutRod(index-1, length, price, dpArray);
-
-		return dpArray[index][length] = Math.max(c1, c2);
+		return dpArray[n-1][n];
 	}
 }

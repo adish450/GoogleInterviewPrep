@@ -1,0 +1,28 @@
+public class Solution {
+    public static int minInsertion(String str) {
+        // Write your code here.
+        StringBuilder sb = new StringBuilder();
+
+		for (int i = str.length()-1; i >=0; i--) {
+			sb.append(str.charAt(i));
+		}
+
+		String s1 = str;
+		String s2 = sb.toString();
+
+		int n1 = s1.length(), n2 = s2.length();
+		int [][] dp = new int[n1+1][n2+1];
+
+		for (int i = 1; i <= n1; i++) {
+			for (int j = 1; j <= n2; j++) {
+				int len1 = 0;
+				if (s1.charAt(i-1) == s2.charAt(j-1)) {
+					len1 = dp[i-1][j-1] + 1;
+				}
+				dp[i][j] = Math.max(len1, Math.max(dp[i-1][j], dp[i][j-1]));
+			}
+		}
+
+		return n1 - dp[n1][n2];
+    }
+}

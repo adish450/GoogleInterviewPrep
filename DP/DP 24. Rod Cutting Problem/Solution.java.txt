@@ -1,0 +1,31 @@
+import java.util.Arrays;
+
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+		int[][] dpArray = new int[n][n+1];
+		for(int[] arr : dpArray) {
+			Arrays.fill(arr, -1);
+		}
+		return cutRod(n-1,n,price,dpArray);
+	}
+
+	private static int cutRod (int index, int length, int[] price, int[][] dpArray) {
+
+		if (index == 0) {
+			return length * price[0];
+		}
+
+		if(dpArray[index][length] != -1) {
+			return dpArray[index][length];
+		}
+
+
+		int c1 = Integer.MIN_VALUE;
+		if (index + 1 <= length)
+			c1 = cutRod(index, length - index -1, price, dpArray) + price[index];
+		int c2 = cutRod(index-1, length, price, dpArray);
+
+		return dpArray[index][length] = Math.max(c1, c2);
+	}
+}

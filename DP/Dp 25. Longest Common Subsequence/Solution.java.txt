@@ -12,32 +12,39 @@ public class Solution {
 		}
 
 		int[][] dpArray = new int[n1][n2];
-		for(int[] arr : dpArray) {
-			Arrays.fill(arr, -1);
+
+		if (s.charAt(0) == t.charAt(0)) {
+			dpArray[0][0] = 1;
+		}
+		
+		for (int i = 1; i < n1 ; i++) {
+			if (s.charAt(i) == t.charAt(0)) {
+				dpArray[i][0] = dpArray[i - 1][0] + 1;
+			} else {
+				dpArray[i][0] = dpArray[i-1][0];
+			}
 		}
 
-		return lcs(n1-1,n2-1,s,t,dpArray);
+		for (int j = 1; j < n2 ; j++) {
+			if (s.charAt(0) == t.charAt(j)) {
+				dpArray[0][j] = dpArray[0][j-1] + 1;
+			} else {
+				dpArray[0][j] = dpArray[0][j-1];
+			}
+		}
+
+		for(int i = 1; i < n1 ; i++) {
+			for(int j = 1 ; j < n2 ; j++) {
+				int len1 = 0;
+				if (s.charAt(i) == t.charAt(j)) {
+					len1 = dpArray[i - 1][j - 1] + 1;
+				}
+				int len2 = dpArray[i - 1][j];
+				int len3 = dpArray[i][j-1];
+				dpArray[i][j] = Math.max(len1, Math.max(len2, len3));
+			}
+		}
+
+		return dpArray[n1-1][n2-1];
     }
-
-	private static int lcs(int index1, int index2, String s, String t, int[][] dpArray) {
-		if (index1 < 0 || index2 < 0) {
-			return 0;
-		}
-
-		if (dpArray[index1][index2] != -1) {
-			return dpArray[index1][index2];
-		}
-
-		int len1 = 0;
-		if (s.charAt(index1) == t.charAt(index2)) {
-			len1 = lcs(index1 -1, index2 -1, s, t, dpArray) + 1;
-		}
-
-		int len2 = lcs(index1-1, index2, s, t, dpArray);
-		int len3 = lcs(index1, index2-1, s, t, dpArray);
-
-
-		return dpArray[index1][index2] = Math.max(len1, Math.max(len2, len3));
-	}
-
 }

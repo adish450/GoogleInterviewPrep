@@ -1,0 +1,43 @@
+import java.util.Arrays;
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+		//Your code goes here
+		int n1 = s.length();
+		int n2 = t.length();
+
+		if (n1 == 0 || n2 ==0) {
+			return 0;
+		}
+
+		int[][] dpArray = new int[n1][n2];
+		for(int[] arr : dpArray) {
+			Arrays.fill(arr, -1);
+		}
+
+		return lcs(n1-1,n2-1,s,t,dpArray);
+    }
+
+	private static int lcs(int index1, int index2, String s, String t, int[][] dpArray) {
+		if (index1 < 0 || index2 < 0) {
+			return 0;
+		}
+
+		if (dpArray[index1][index2] != -1) {
+			return dpArray[index1][index2];
+		}
+
+		int len1 = 0;
+		if (s.charAt(index1) == t.charAt(index2)) {
+			len1 = lcs(index1 -1, index2 -1, s, t, dpArray) + 1;
+		}
+
+		int len2 = lcs(index1-1, index2, s, t, dpArray);
+		int len3 = lcs(index1, index2-1, s, t, dpArray);
+
+
+		return dpArray[index1][index2] = Math.max(len1, Math.max(len2, len3));
+	}
+
+}

@@ -3,21 +3,24 @@ import java.util.Arrays;
 public class Solution {
     public static long getMaximumProfit (int n, long[] values) {
         // Your code goes here.
-        long[][] dp = new long[n+1][2];
+        long[] dp = new long[2];
+        dp[0] = 0; dp[1] = 0;
         
         for (int i = n-1; i >= 0; i--) {
+            long[] curr = new long[2];
             for (int j = 1; j >= 0; j--) {
                 long profit = 0;
                 if (j == 1) {
-                    profit = Math.max(-values[i] + dp[i + 1][0], dp[i + 1][1]);
+                    profit = Math.max(-values[i] + dp[0], dp[1]);
                 } else {
-                    profit = Math.max(values[i] + dp[i + 1][1], dp[i + 1][0]);
+                    profit = Math.max(values[i] + dp[1], dp[0]);
                 }
 
-                dp[i][j] = profit;
+                curr[j] = profit;
             }
+            dp = curr;
         }
 
-        return dp[0][1];
+        return dp[1];
     }
 }

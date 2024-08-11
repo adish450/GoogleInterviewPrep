@@ -1,0 +1,48 @@
+public class Solution {
+    public static int longestStrChain(String[] arr) {
+        // Write your code here.
+        // Write your code here.
+        int n = arr.length;
+        Collections.sort(arr);
+		int[] dp = new int[n];
+		Arrays.fill(dp, 1);
+
+		int max = Integer.MIN_VALUE;
+		int maxIndex = -1;
+		for (int i = 1; i < n; i++) {
+			for (int j = 0; j < i; j++) {
+				if (compare(arr[i], arr[j]) && dp[i] < dp[j] + 1) {
+					dp[i] = dp[j] + 1;
+				}
+			}
+			if (dp[i] > max) {
+				max = dp[i];
+			}
+		}
+
+		return max;
+    }
+
+    private static boolean compare (String s1, String s2) {
+        if (s1.length() - s2.length() > 1) {
+            return false;
+        }
+
+        int i = 0, j = 0;
+
+        while (i != s1.length()) {
+            if (s1.charAt(i) == s2.charAt(j)) {
+                i++;
+                j++;
+            } else {
+                i++;
+            }
+        }
+
+        if (i == s1.length() && j == s2.length()) {
+            return true;
+        }
+
+        return false;
+    }
+}

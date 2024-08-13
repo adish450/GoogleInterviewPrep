@@ -1,0 +1,41 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int maxCoins(int a[]) {
+        // Write your code here..
+        int n = a.length;
+        int[][] dp = new int[n][n];
+        for (int[] arr : dp) {
+            Arrays.fill(arr, -1);
+        }
+
+        return maxCoins(0, n-1, a, dp);
+    }
+
+    private static int maxCoins (int i, int j, int[] a, int[][] dp) {
+
+        if (i > j) {
+            return 0;
+        }
+
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        int max = Integer.MIN_VALUE;
+        for(int k = i; k <= j; k++) {
+            int ans = a[k];
+            if (i-1 >= 0) {
+                ans *= a[i-1];
+            }
+
+            if (j + 1 < a.length ) {
+                ans *= a[j+1];
+            }
+            max = Math.max(max, ans + maxCoins(i, k-1, a, dp) + maxCoins(k+1, j, a, dp));
+        }
+
+        return dp[i][j] = max;
+    }
+
+}

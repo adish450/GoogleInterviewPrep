@@ -1,0 +1,41 @@
+import java.util.*;
+public class Solution {
+    public static int palindromePartitioning(String str) {
+        // Write your code here
+        int n = str.length();
+        int[] dp = new int[n];
+        Arrays.fill(dp,-1);
+        return palindromePartitioning(0,n,str,dp) - 1;
+    }
+
+    private static int palindromePartitioning (int i, int n, String str, int[] dp) {
+        if (i == n) {
+            return 0;
+        }
+
+        if(dp[i] != -1) {
+            return dp[i];
+        }
+
+        int min = Integer.MAX_VALUE;
+        for(int j = i; j < n; j++) {
+            if (isPalindrome(i,j,str)) {
+                min = Math.min(min, 1 + palindromePartitioning(j+1,n,str,dp));
+            }
+        }
+
+        return dp[i] = min;
+
+    }
+
+    private static boolean isPalindrome (int i, int j, String str) {
+        while (i < j) {
+            if (str.charAt(i) != str.charAt(j)) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+}

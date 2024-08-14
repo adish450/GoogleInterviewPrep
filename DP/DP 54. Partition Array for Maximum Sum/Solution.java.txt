@@ -4,27 +4,17 @@ public class Solution {
     public static int maximumSubarray(int arr[], int k) {
         // Write your code here..
         int n = arr.length;
-        int[] dp = new int[n];
-        Arrays.fill(dp,-1);
-        return maximumSubarray(0,n,arr,k,dp);
-    }
+        int[] dp = new int[n+1];
+        for (int i = n-1; i >= 0; i--) {
+            int max = Integer.MIN_VALUE;
+            int maxi = Integer.MIN_VALUE;
+            for(int j = i; j < Math.min(n,i + k); j++) {
+                maxi = Math.max(maxi, arr[j]);
+                max = Math.max(max, maxi * (j-i+1) + dp[j+1]);
+            }
 
-    private static int maximumSubarray(int i,int n, int[] arr, int k, int[] dp) {
-        if (i == n) {
-            return 0;
+            dp[i] = max;
         }
-
-        if (dp[i] != -1) {
-            return dp[i];
-        }
-
-        int max = Integer.MIN_VALUE;
-        int maxi = Integer.MIN_VALUE;
-        for(int j = i; j < Math.min(n,i + k); j++) {
-            maxi = Math.max(maxi, arr[j]);
-            max = Math.max(max, maxi * (j-i+1) + maximumSubarray(j+1, n, arr, k, dp));
-        }
-
-        return dp[i] = max;
+        return dp[0];
     }
 }

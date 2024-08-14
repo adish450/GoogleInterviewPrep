@@ -1,19 +1,19 @@
 public class Solution {
 	public static void main(String[] args) {
 		
-		//binary search for ceil
-		//smallest element greater than to target.
+		//binary search for floor
+		//greatest element <= target.
 		
 		int low = 0, high = n-1, ans = n;
 		
 		while(low <= high) {
 			int mid =  low + (high - low) / 2;
 			
-			if (arr[mid] > target) {
+			if (arr[mid] <= target) {
 				ans = mid;
-				high = mid - 1;
-			} else {
 				low = mid + 1;
+			} else {
+				mid = mid - 1;
 			}
 		}
 		return ans;

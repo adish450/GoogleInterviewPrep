@@ -1,0 +1,38 @@
+public class Solution {
+    public static int minimumRateToEatBananas(int []v, int h) {
+        // Write Your Code Here
+        int max = Integer.MIN_VALUE;
+
+        for(int a : v) {
+            max = Math.max(max, a);
+        }
+
+        int lo = 1, hi = max;
+        int ans = Integer.MAX_VALUE;
+        while(lo <= hi) {
+            int mid = lo + (hi - lo)/2;
+            long nums = 0;
+            for (int i = 0; i < v.length; i++) {
+                if (v[i] % mid == 0) {
+                    nums += v[i]/mid;
+                } else {
+                    nums += (v[i]/mid) + 1;
+                }
+            }
+
+            if (nums <= h) {
+                //decrease no of banana
+                hi = mid - 1;
+                ans = Math.min(ans, mid);
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        return ans;
+        
+    }
+}
+
+
+

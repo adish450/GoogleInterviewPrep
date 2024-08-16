@@ -1,0 +1,39 @@
+import java.util.ArrayList;
+public class Solution {
+    public static int findPeakElement(ArrayList<Integer> arr) {
+        // Write your code here.
+        int n = arr.size();
+
+        if (n == 1) {
+            return arr.get(0);
+        }
+
+        if (arr.get(0).intValue() > arr.get(1).intValue()) {
+            return arr.get(0);
+        }
+
+        if (arr.get(n-1).intValue() > arr.get(n-2).intValue()) {
+            return arr.get(n-1);
+        }
+        
+        int lo = 1, hi = n - 2;
+
+        while(lo <= hi) {
+            int mid = (lo + hi)/2;
+
+            if (arr.get(mid-1).intValue() < arr.get(mid).intValue() && arr.get(mid).intValue() > arr.get(mid+1).intValue()) {
+                return arr.get(mid);
+            }
+
+            if (arr.get(mid-1).intValue() < arr.get(mid).intValue()) {
+                //increasing curve
+                lo = mid + 1;
+            } else {
+                //decreasing curve or minima
+                hi = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+};

@@ -1,0 +1,67 @@
+import java.util.*;
+public class HelloWorld {
+
+	public static class DisjointSet {
+		int[] rank;
+		int[] parent;
+		
+		DisjointSet(int n) {
+			rank = new int[n+1];
+			parent = new int[n+1];
+			
+			for (int i = 0; i <= n; i++) {
+				parent[i] = i;
+			}
+		}
+		
+		private int findUlP(int node) {
+			if (node == parent[node]) {
+				return node;
+			}
+			
+			//path compression
+			return parent[node] = findUlP(parent[node]);
+		}
+		
+		public void unionByRank(int u, int v) {
+			int p1 = findUlP(u);
+			int p2 = findUlP(v);
+			
+			if (p1 == p2) return;
+			
+			if(rank[p1] > rank[p2]) { //check rank of ultimate parent
+				//merge p2 in p1
+				parent[p2] = p1;
+			} else if(rank[p1] < rank[p2]) { //check rank of ultimate parent
+				//merge p1 in p2
+				parent[p1] = p2;
+			} else {
+				//merge anyone
+				parent[p2] = p1;
+				rank[p1] += 1;
+			}	
+		}
+	}
+	public static void main(String[] args) {
+		DisjointSet ds = new DisjointSet(7);
+		ds.unionByRank(1,2);
+		ds.unionByRank(2,3);
+		ds.unionByRank(4,5);
+		ds.unionByRank(6,7);
+		ds.unionByRank(5,6);
+		
+		if(ds.findUlP(3) == ds.findUlP(7)) {
+			System.out.println("Same parent");
+		} else{
+			System.out.println("Different parent");
+		}
+		
+		ds.unionByRank(3,7);
+		
+		if(ds.findUlP(3) == ds.findUlP(7)) {
+			System.out.println("Same parent");
+		} else{
+			System.out.println("Different parent");
+		}
+	}
+}

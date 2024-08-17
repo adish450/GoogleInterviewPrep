@@ -13,15 +13,10 @@
  */
 public class Solution {
     public ArrayList<Integer> solve(TreeNode A, int B) {
-        if(A==null)
-        return new ArrayList<Integer>();
-        
+        if(A==null) return new ArrayList<Integer>();
         LinkedList<Integer> ans = new LinkedList<>();
-        
         dfs(A,B,ans);
-        
         return new ArrayList<>(ans);
-        
     }
     
     private boolean dfs (TreeNode A, int B, LinkedList<Integer> ans) {
@@ -35,21 +30,10 @@ public class Solution {
         }
         
         ans.addLast(A.val);
-        
-        boolean isLeftAns = dfs(A.left,B,ans);
-        if(!isLeftAns) {
-            //ans.removeLast();
-        }else {
-            return true;
-        }
-        //ans.addLast(A.val);
-        boolean isRightAns = dfs(A.right,B,ans);
-        if(!isRightAns) {
-            ans.removeLast();
-        } else {
-            return true;
-        }
-        
+        if (dfs(A.left,B,ans) || dfs(A.right,B,ans)) {
+			return true;
+		}
+        ans.removeLast();
         return false;
         
     }

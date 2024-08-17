@@ -62,7 +62,7 @@ class Solution {
 
                 //process left subtree
                 if (pair.node.right != null) {
-                    stack.push(new Pair(pair.node.right,2));
+                    stack.push(new Pair(pair.node.right,1));
                 }
             } else {
                 //inorder traversal
